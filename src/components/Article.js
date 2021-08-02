@@ -1,32 +1,32 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Card, Button, CardGroup, Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { setArticles } from '../redux/articleSlice';
 
 
 
 export default function Article() {
 
-    const [article, setArticles] = useState(null);
+    const article = useSelector((state) => state.article.articles)
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
 
         axios({
             method: 'get',
-            url: 'http://localhost:3000/news/tr/health',
+            url: 'http://localhost:8080/news/tr',
             responseType: 'json'
         })
             .then(function (response) {
-                console.log(response.data)
-                setArticles(response.data);
+                dispatch(setArticles(response.data))
             });
 
     }, [])
 
 
     function renderList(element, index) {
-
-
-        console.log(element);
 
         return (
 
@@ -53,13 +53,12 @@ export default function Article() {
     }
 
 
-
     return (
         <div className="container mt-5 p-5">
 
             <div className="d-flex flex-wrap justify-content-center">
                 <CardGroup>
-                    {article != null ? article.articles.map(renderList) : "Ops!"}
+                    {  article == null || !(article.articles.length > 0) ? <img src="noresult.png"/> :article.articles.map(renderList)}
                 </CardGroup>
             </div>
 

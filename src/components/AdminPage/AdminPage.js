@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button } from "react-bootstrap";
-import "./User.css"
 import { logout } from "../../services/authService"
-import { setAuthentication } from '../../redux/userSlice';
+import { setAuthentication, setModalStatus } from '../../redux/userSlice';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 
-export default function UserPage() {
+export default function AdminPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -33,11 +32,34 @@ export default function UserPage() {
     }
 
 
+    useEffect(() => {
+
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/user/admin',
+            responseType: 'json'
+        })
+            .then(function (response) {
+
+                console.log(response)
+
+            }).catch((error) => {
+
+                history.push("/")
+
+                dispatch(setModalStatus({ modal: true, modalMessage: "You Don't Have The Admin Privileges" }))
+
+            })
+
+    }, [])
+
+
+
     return (
         <div className="UserPage">
 
             <Form onSubmit={handleSubmit} >
-                <h2>Profile</h2>
+                <h2>AdminPage</h2>
                 <hr />
 
                 <Form.Group size="lg" controlId="email">

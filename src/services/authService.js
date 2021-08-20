@@ -1,24 +1,25 @@
 import axios from 'axios';
 import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
+import jwt_Decode from 'jwt-decode';
 
 
 const login = (username, password) => {
 
-
-    return axios.post("http://localhost:8080/authenticate", { "username": username, "password": password }, { headers: { "Content-Type": "application/json" } })
+    return axios.post("http://localhost:8080/authenticate",
+        { "username": username, "password": password },
+        { headers: { "Content-Type": "application/json" } })
         .then(user => {
 
-            console.log(user)
-
-            if (user.status == 200) {
+            if (user.status === 200) {
                 const token = user.data;
                 localStorage.setItem("jwtToken", token.jwt);
                 setAuthorizationToken(token.jwt);
+                var details = jwt_Decode(user.data.jwt)
+                return [true, details];
             }
 
-            return user.data;
         })
-        .catch(err => console.log(err));
+        .catch(() => false);
 }
 
 export const logout = () => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
-import { setFavourites } from '../../redux/articleSlice';
+import { articleSlice, setFavourites } from '../../redux/articleSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, CardGroup, Row, Image, Col } from 'react-bootstrap';
 
@@ -13,20 +13,16 @@ export default function FavouritesPage() {
     const dispatch = useDispatch();
     const article = useSelector((state) => state.article)
 
-    console.log(article)
-
-
 
     useEffect(() => {
 
-        console.log(localStorage.getItem("jwtToken").jwt)
-
         axios({
             method: 'get',
-            url: 'http://localhost:8080/favourite/getAll',
+            url: 'http://localhost:8080/favourite/get/all',
             responseType: 'json'
         })
             .then(function (response) {
+                console.log(...response.data)
                 dispatch(setFavourites(response.data))
             });
 
@@ -35,7 +31,6 @@ export default function FavouritesPage() {
 
     function favHandler(index, element) {
 
-        console.log(element)
 
         const heart = document.getElementById("article:" + index)
 
@@ -71,6 +66,7 @@ export default function FavouritesPage() {
         return (
 
             <div key={index} style={{ width: '19rem' }} >
+
                 <Card >
                     <Card.Header>
                         {element.author}
@@ -97,17 +93,20 @@ export default function FavouritesPage() {
 
     }
 
+    console.log(article)
 
-    console.log(article.favourites)
 
     return (
         <div className="container mt-5 p-5">
 
+            <h2>Favourites</h2>
+            <hr />
+
             <div className="d-flex flex-wrap justify-content-center">
                 <CardGroup>
-                    {article.favourites == null ? <img src="noresult.png" /> : article.favourites.map(renderList)}
+                    {(article.favourites == null) ? <img src="noresult.png" /> : article.favourites.map(renderList)}
                 </CardGroup>
             </div>
         </div>
-    )
+    );
 }

@@ -5,7 +5,7 @@ const initialState = {
   isAuthenticated: false,
   error: false,
   modal: false,
-  modalMessage: ""
+  modalMessage: "",
 }
 
 export const userSlice = createSlice({

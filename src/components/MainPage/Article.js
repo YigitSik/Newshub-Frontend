@@ -4,11 +4,10 @@ import React, { useEffect, useState } from 'react'
 import { Card, Button, CardGroup, Row, Image, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../../redux/articleSlice';
-import { setModalStatus } from '../../redux/userSlice';
+import { setAuthentication, setModalStatus } from '../../redux/userSlice';
 import { useHistory } from 'react-router';
+import { logout } from '../../services/authService';
 import "./mainPage.css"
-
-
 
 
 export default function Article() {
@@ -20,27 +19,41 @@ export default function Article() {
     const history = useHistory();
 
 
+    axios.interceptors.response.use(function (response) {
+
+        return response;
+    }, function (error) {
+
+        if (error.response.status == 403) {
+            dispatch(setModalStatus(true, "You Don't Have Permission"))
+            history.push("/login")
+            dispatch(setAuthentication(false))
+            logout()
+        }
+
+    });
+
 
     useEffect(() => {
 
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/news/tr',
-            responseType: 'json'
-        })
-            .then(function (response) {
-                dispatch(setArticles(response.data))
-            }).catch(e => {
+        if (article == null) {
 
-                if (e.response.status == 403) {
-                    localStorage.removeItem("jwtToken");
-                    setAuthorizationToken(false);
-                    history.push("/")
-                }
-
+            axios({
+                method: 'get',
+                url: 'http://localhost:8080/news/tr',
+                responseType: 'json'
             })
+                .then(function (response) {
+                    if (response != null) {
+                        dispatch(setArticles(response.data))
+                    }
+
+                })
+        }
 
     }, [])
+
+
 
     function favHandler(index, element) {
 
@@ -77,6 +90,7 @@ export default function Article() {
         return (
 
             <div key={index} style={{ width: '19rem' }} >
+
                 <Card >
                     <Card.Header>
                         {element.author}
@@ -105,6 +119,9 @@ export default function Article() {
 
     return (
         <div className="container mt-5 p-5">
+
+            <h2>Top Headlines</h2>
+            <hr />
 
             <div className="d-flex flex-wrap justify-content-center">
                 <CardGroup>

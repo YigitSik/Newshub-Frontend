@@ -12,7 +12,7 @@ import login from "../../services/authService"
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [error, setErrorStatus] = useState(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -27,24 +27,39 @@ export default function Login() {
     if (email && password) {
 
       login(email, password)
-        .then(data => {
+        .then(details => {
 
-          dispatch(setAuthentication(true))
+          if (details != null && details[0]) {
+            dispatch(setAuthentication(true))
 
-          console.log(data)
-          history.push("/")
+            console.log(details[1].isAdmin)
+            console.log(details[1])
+
+            if (details[1].isAdmin) {
+
+              history.push("/admin")
+            }
+            else {
+              history.push("/")
+            }
+            setErrorStatus(false);
+          }
+          else {
+            setErrorStatus(true);
+          }
 
         })
         .catch(err => console.log(err));
 
-      setSubmitted(true);
     }
 
   }
 
   return (
     <div className="Login">
+
       <Form onSubmit={handleSubmit}>
+        <h2 className="mb-3">Login</h2>
         <Form.Group size="lg" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
@@ -52,6 +67,7 @@ export default function Login() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className={error ? "border-danger" : ""}
           />
         </Form.Group>
         <Form.Group size="lg" controlId="password">
@@ -60,10 +76,12 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className={error ? "border-danger" : ""}
           />
         </Form.Group>
+        {error ? <p className="text-danger">Bad Credentials</p> : ""}
         <Button className="mt-3" size="lg" type="submit" disabled={!validateForm()}>
-          Login
+          Submit
         </Button>
       </Form>
     </div>

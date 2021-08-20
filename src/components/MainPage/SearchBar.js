@@ -4,7 +4,7 @@ import { Button, Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'reac
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticles, setCountry, setCategory } from '../../redux/articleSlice';
 import { countries, categories } from "../../helpers/uiData"
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import "./mainPage.css"
 import { setAuthorizationToken } from "../../helpers/setAuthorizationToken";
 import { setAuthentication } from '../../redux/userSlice';
@@ -19,7 +19,8 @@ export default function SearchBar() {
     const category = useSelector((state) => state.article.category)
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated)
 
-    let history = useHistory();
+    const history = useHistory();
+    const location = useLocation();
     const dispatch = useDispatch();
 
     try {
@@ -32,10 +33,19 @@ export default function SearchBar() {
 
     function selectCategory(e) {
         dispatch(setCategory(e.target.innerText.toLowerCase()));
+
+        if (location.pathname != "/") {
+            history.push("/")
+        }
+
     }
 
     function selectCountry(e) {
         dispatch(setCountry(e.target.attributes.value.value));
+
+        if (location.pathname != "/") {
+            history.push("/")
+        }
     }
 
     function search(e) {
@@ -49,9 +59,17 @@ export default function SearchBar() {
             url: 'http://localhost:8080/query/' + country + "/" + query,
             responseType: 'json'
         }).then(function (response) {
-            console.log(response)
-            dispatch(setArticles(response.data))
+
+            if (response != null) {
+                console.log(response)
+                dispatch(setArticles(response.data))
+            }
+
         });
+
+        if (location.pathname != "/") {
+            history.push("/")
+        }
     }
 
     useEffect(() => {
@@ -63,8 +81,12 @@ export default function SearchBar() {
             url: 'http://localhost:8080/category/' + country + '/' + category,
             responseType: 'json'
         }).then(function (response) {
-            console.log(response)
-            dispatch(setArticles(response.data))
+
+            if (response != null) {
+                console.log(response)
+                dispatch(setArticles(response.data))
+            }
+
         });
 
     }, [category, country])
@@ -76,14 +98,13 @@ export default function SearchBar() {
         <div>
 
             <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
-                <Navbar.Brand className="mx-3" onClick={() => history.push("/")}>News Hub</Navbar.Brand>
+                <Navbar.Brand className="btn mx-3" onClick={() => history.push("/")}>News Hub</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
                         className="m-auto my-2 my-lg-0"
                         style={{ maxHeight: '100px' }}
                         navbarScroll
-
                     >
                         {categories.map((category, idx) => (<Nav.Link key={idx} onClick={selectCategory}>{category.name}</Nav.Link>))}
 

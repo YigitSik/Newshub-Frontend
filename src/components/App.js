@@ -13,6 +13,7 @@ import React from 'react';
 import FavouritesPage from './FavouritesPage/FavouritesPage';
 import UserPage from './UserPage/UserPage';
 import ModalAlert from './MainPage/ModalAlert';
+import AdminPage from "./AdminPage/AdminPage"
 
 
 
@@ -50,6 +51,10 @@ function App() {
 
           <Route exact path="/user">
             <UserPage />
+          </Route>
+
+          <Route exact path="/admin">
+            <AdminPage />
           </Route>
 
           <Redirect from="*" to="/" />

@@ -1,47 +1,33 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Col, Row } from "react-bootstrap";
 import { logout } from "../../services/authService"
-import { setAuthentication, setModalStatus } from '../../redux/userSlice';
+import { setModalStatus } from '../../redux/modalSlice';
+import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import UserTable from './UserTable';
+import "./AdminPage.css"
 
 
 export default function AdminPage() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+
+    const [userData, setUserData] = useState(null);
 
     const dispatch = useDispatch()
     const history = useHistory()
-
-    function validateForm() {
-        return email.length > 0 && password.length > 0;
-    }
-
-    function handleSubmit(event) {
-        event.preventDefault();
-    }
-
-    function logoutHandle() {
-
-        logout()
-        dispatch(setAuthentication(false))
-        history.push("/")
-
-    }
-
 
     useEffect(() => {
 
         axios({
             method: 'get',
-            url: 'http://localhost:8080/user/admin',
+            url: '/user/admin',
             responseType: 'json'
         })
             .then(function (response) {
 
-                console.log(response)
+                setUserData(response.data);
 
             }).catch((error) => {
 
@@ -56,50 +42,17 @@ export default function AdminPage() {
 
 
     return (
-        <div className="UserPage">
+        <div className="AdminPage">
 
-            <Form onSubmit={handleSubmit} >
-                <h2>AdminPage</h2>
+            <Row>
+
+                <h1>Admin Page</h1>
                 <hr />
 
-                <Form.Group size="lg" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        autoFocus
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-
-
-                <Button className="mt-3 mx-2" size="lg" type="submit" disabled={!validateForm()}>
-                    Update
-                </Button>
-                <Button className="mt-3 mx-2" size="lg" onClick={logoutHandle}>
-                    Logout
-                </Button>
-
-
-
-            </Form>
-
+                <Col>
+                    <UserTable {...userData} />
+                </Col>
+            </Row>
         </div>
     )
 }

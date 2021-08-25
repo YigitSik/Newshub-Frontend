@@ -1,11 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   user: '',
   isAuthenticated: false,
   error: false,
-  modal: false,
-  modalMessage: "",
+  isAdmin: false,
 }
 
 export const userSlice = createSlice({
@@ -18,11 +17,10 @@ export const userSlice = createSlice({
       state.isAuthenticated = parameter.payload
 
     },
+    setIsAdmin: (state, parameter) => {
 
-    setModalStatus: (state, content) => {
+      state.isAdmin = parameter.payload
 
-      state.modal = content.payload.modal
-      state.modalMessage = content.payload.modalMessage
     }
 
   },
@@ -30,7 +28,7 @@ export const userSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setModalStatus, setAuthentication } = userSlice.actions
+export const { setAuthentication, setIsAdmin } = userSlice.actions
 
 export default userSlice.reducer
 

@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { setAuthorizationToken } from '../../helpers/setAuthorizationToken';
 import React, { useEffect, useState } from 'react'
 import { Card, Button, CardGroup, Row, Image, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../../redux/articleSlice';
-import { setAuthentication, setModalStatus } from '../../redux/userSlice';
+import { setAuthentication } from '../../redux/userSlice';
+import { setModalStatus } from '../../redux/modalSlice';
 import { useHistory } from 'react-router';
 import { logout } from '../../services/authService';
 import "./mainPage.css"
@@ -40,7 +40,7 @@ export default function Article() {
 
             axios({
                 method: 'get',
-                url: 'http://localhost:8080/news/tr',
+                url: '/news/tr',
                 responseType: 'json'
             })
                 .then(function (response) {
@@ -66,7 +66,7 @@ export default function Article() {
                 heart.setAttribute("src", "heartDisabled.png")
             else heart.setAttribute("src", "heartActive.png")
 
-            axios.post("http://localhost:8080/favourite/add", element)
+            axios.post("/favourite/add", element)
                 .then((response) => {
 
                     console.log(response)
@@ -79,7 +79,7 @@ export default function Article() {
 
         }
         else {
-            dispatch(setModalStatus({ modal: true, modalMessage: "Please Authenticate First" }));
+            dispatch(setModalStatus({ modalStatus: true, modalMessage: "You Need To Login First" }));
         }
 
     }

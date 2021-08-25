@@ -11,7 +11,6 @@ import LoginPage from './LoginPage/LoginPage';
 import RegisterPage from './RegisterPage/RegisterPage';
 import React from 'react';
 import FavouritesPage from './FavouritesPage/FavouritesPage';
-import UserPage from './UserPage/UserPage';
 import ModalAlert from './MainPage/ModalAlert';
 import AdminPage from "./AdminPage/AdminPage"
 
@@ -47,10 +46,6 @@ function App() {
 
           <Route exact path="/favourites">
             <FavouritesPage />
-          </Route>
-
-          <Route exact path="/user">
-            <UserPage />
           </Route>
 
           <Route exact path="/admin">

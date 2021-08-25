@@ -1,13 +1,14 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap'
+import { Button, Navbar, Nav, NavDropdown, Form, FormControl, Image, OverlayTrigger, Popover } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { setArticles, setCountry, setCategory } from '../../redux/articleSlice';
 import { countries, categories } from "../../helpers/uiData"
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import "./mainPage.css"
 import { setAuthorizationToken } from "../../helpers/setAuthorizationToken";
-import { setAuthentication } from '../../redux/userSlice';
+import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
+import { logout } from '../../services/authService';
 
 
 
@@ -18,6 +19,8 @@ export default function SearchBar() {
     const country = useSelector((state) => state.article.country)
     const category = useSelector((state) => state.article.category)
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated)
+    const isAdmin = useSelector((state) => state.user.isAdmin)
+
 
     const history = useHistory();
     const location = useLocation();
@@ -56,7 +59,7 @@ export default function SearchBar() {
 
         axios({
             method: 'get',
-            url: 'http://localhost:8080/query/' + country + "/" + query,
+            url: '/query/' + country + "/" + query,
             responseType: 'json'
         }).then(function (response) {
 
@@ -72,13 +75,22 @@ export default function SearchBar() {
         }
     }
 
+    function handleLogout() {
+
+        logout();
+        dispatch(setAuthentication(false))
+        dispatch(setIsAdmin(false))
+        history.push("/")
+
+    }
+
     useEffect(() => {
 
         console.log("efect")
 
         axios({
             method: 'get',
-            url: 'http://localhost:8080/category/' + country + '/' + category,
+            url: '/category/' + country + '/' + category,
             responseType: 'json'
         }).then(function (response) {
 
@@ -90,6 +102,8 @@ export default function SearchBar() {
         });
 
     }, [category, country])
+
+
 
 
     return (
@@ -130,7 +144,10 @@ export default function SearchBar() {
                 {isAuthenticated ?
                     <Nav className="mx-3">
                         <Link to="/favourites" className="btn "><Image src="bookmark.png" className="favIcon" /></Link>
-                        <Link to="/user" className="btn "><Image src="user.png" className="favIcon" /></Link>
+                        <NavDropdown title={<img src="user.png" className="favIcon" />} id="navbarScrollingDropdown">
+                            {isAdmin ? <Link to="/admin" className="btn">Admin Page</Link> : null}
+                            <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                        </NavDropdown>
                     </Nav>
                     :
                     <Nav className="mx-3">

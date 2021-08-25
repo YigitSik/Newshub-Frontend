@@ -1,18 +1,21 @@
 import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
-import { setModalStatus } from '../../redux/userSlice';
+import { setModalStatus } from '../../redux/modalSlice';
 import { useHistory } from 'react-router';
 
 export default function ModalAlert() {
 
-    const modalMessage = useSelector((state) => state.user.modalMessage)
-    const modal = useSelector((state) => state.user.modal)
+    const modalStatus = useSelector((state) => state.modal.modalStatus)
+    const modalMessage = useSelector((state) => state.modal.modalMessage)
+
+
+    console.log(modalStatus);
 
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleClose = () => dispatch(setModalStatus(false));
+    const handleClose = () => dispatch(setModalStatus({ modalStatus: false }));
 
     function redirectLogin() {
         handleClose()
@@ -22,7 +25,7 @@ export default function ModalAlert() {
     return (
         <div>
 
-            <Modal show={modal} onHide={handleClose}>
+            <Modal show={modalStatus} onHide={handleClose}>
                 <Modal.Header >
                     <Modal.Title>Attenttion!</Modal.Title>
                 </Modal.Header>

@@ -28,7 +28,7 @@ export default function RegisterPage() {
     if (validateForm)
     {
 
-      axios.post("http://localhost:8080/user/register",
+      axios.post("/user/register",
         { "username": email, "password": password },
         { headers: { "Content-Type": "application/json" } })
         .then(response => {
@@ -72,7 +72,7 @@ export default function RegisterPage() {
           />
         </Form.Group>
         <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Password Verification</Form.Label>
           <Form.Control
             type="password"
             value={passwordVerification}

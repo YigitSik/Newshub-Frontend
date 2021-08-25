@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthentication } from '../../redux/userSlice';
+import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
 import login from "../../services/authService"
 
 
@@ -38,6 +38,7 @@ export default function Login() {
             if (details[1].isAdmin) {
 
               history.push("/admin")
+              dispatch(setIsAdmin(true))
             }
             else {
               history.push("/")

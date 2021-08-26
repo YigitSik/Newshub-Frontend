@@ -6,6 +6,7 @@ import "./RegisterPage.css"
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { setAuthentication } from "../../redux/userSlice";
+import { BaseURL } from "../../helpers/properties";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -28,7 +29,7 @@ export default function RegisterPage() {
     if (validateForm)
     {
 
-      axios.post("/user/register",
+      axios.post(BaseURL+"/user/register",
         { "username": email, "password": password },
         { headers: { "Content-Type": "application/json" } })
         .then(response => {

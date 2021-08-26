@@ -9,6 +9,7 @@ import "./mainPage.css"
 import { setAuthorizationToken } from "../../helpers/setAuthorizationToken";
 import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
 import { logout } from '../../services/authService';
+import { BaseURL } from '../../helpers/properties';
 
 
 
@@ -59,7 +60,7 @@ export default function SearchBar() {
 
         axios({
             method: 'get',
-            url: '/query/' + country + "/" + query,
+            url: BaseURL + '/query/' + country + "/" + query,
             responseType: 'json'
         }).then(function (response) {
 
@@ -90,7 +91,7 @@ export default function SearchBar() {
 
         axios({
             method: 'get',
-            url: '/category/' + country + '/' + category,
+            url: BaseURL + '/category/' + country + '/' + category,
             responseType: 'json'
         }).then(function (response) {
 

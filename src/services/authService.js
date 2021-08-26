@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { setAuthorizationToken } from '../helpers/setAuthorizationToken';
 import jwt_Decode from 'jwt-decode';
+import { BaseURL } from '../helpers/properties';
 
 
 const login = (username, password) => {
 
-    return axios.post("http://localhost:8080/authenticate",
+    return axios.post(BaseURL + "/authenticate",
         { "username": username, "password": password },
         { headers: { "Content-Type": "application/json" } })
         .then(user => {

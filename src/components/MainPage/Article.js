@@ -8,6 +8,7 @@ import { setModalStatus } from '../../redux/modalSlice';
 import { useHistory } from 'react-router';
 import { logout } from '../../services/authService';
 import "./mainPage.css"
+import { BaseURL } from '../../helpers/properties';
 
 
 export default function Article() {
@@ -40,7 +41,7 @@ export default function Article() {
 
             axios({
                 method: 'get',
-                url: '/news/tr',
+                url: BaseURL + '/news/tr',
                 responseType: 'json'
             })
                 .then(function (response) {
@@ -66,7 +67,7 @@ export default function Article() {
                 heart.setAttribute("src", "heartDisabled.png")
             else heart.setAttribute("src", "heartActive.png")
 
-            axios.post("/favourite/add", element)
+            axios.post(BaseURL + "/favourite/add", element)
                 .then((response) => {
 
                     console.log(response)

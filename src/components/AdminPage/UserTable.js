@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Table } from 'react-bootstrap'
 import axios from 'axios';
+import { BaseURL } from '../../helpers/properties';
 
 
 export default function UserTable(props) {
@@ -10,7 +11,7 @@ export default function UserTable(props) {
 
         console.log(user.username);
 
-        axios.post("http://localhost:8080/user/delete", { "username": user.username },
+        axios.post(BaseURL + "http://localhost:8080/user/delete", { "username": user.username },
             { headers: { "Content-Type": "application/json" } })
             .then(response => {
 

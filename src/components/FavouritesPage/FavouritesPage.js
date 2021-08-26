@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { articleSlice, setFavourites } from '../../redux/articleSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button, CardGroup, Row, Image, Col } from 'react-bootstrap';
+import { BaseURL } from '../../helpers/properties';
 
 
 
@@ -18,7 +19,7 @@ export default function FavouritesPage() {
 
         axios({
             method: 'get',
-            url: '/favourite/get/all',
+            url: BaseURL + '/favourite/get/all',
             responseType: 'json'
         })
             .then(function (response) {
@@ -37,7 +38,7 @@ export default function FavouritesPage() {
         if (heart.getAttribute("src") == "heartActive.png") {
             heart.setAttribute("src", "heartDisabled.png")
 
-            axios.put("/favourite/delete" + "/" + element.favoriteId)
+            axios.put(BaseURL + "/favourite/delete" + "/" + element.favoriteId)
                 .then((response) => {
                     console.log(response)
                 }).catch((e) => {
@@ -48,7 +49,7 @@ export default function FavouritesPage() {
         else {
             heart.setAttribute("src", "heartActive.png")
 
-            axios.post("/favourite/add", element)
+            axios.post(BaseURL + "/favourite/add", element)
                 .then((response) => {
                     console.log(response)
                 }).catch((e) => {

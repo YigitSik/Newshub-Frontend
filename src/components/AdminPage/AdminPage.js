@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import UserTable from './UserTable';
 import "./AdminPage.css"
+import { BaseURL } from '../../helpers/properties';
 
 
 export default function AdminPage() {
@@ -22,7 +23,7 @@ export default function AdminPage() {
 
         axios({
             method: 'get',
-            url: '/user/admin',
+            url: BaseURL + '/user/admin',
             responseType: 'json'
         })
             .then(function (response) {

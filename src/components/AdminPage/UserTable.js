@@ -11,7 +11,7 @@ export default function UserTable(props) {
 
         console.log(user.username);
 
-        axios.post(BaseURL + "http://localhost:8080/user/delete", { "username": user.username },
+        axios.post(BaseURL + "/user/delete", { "username": user.username },
             { headers: { "Content-Type": "application/json" } })
             .then(response => {
 

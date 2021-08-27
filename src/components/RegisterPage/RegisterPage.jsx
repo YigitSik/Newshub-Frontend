@@ -39,7 +39,6 @@ export default function RegisterPage() {
               if(response.status==200)
               {
                 history.push("/")
-                dispatch(setAuthentication(true))
                 alert("You Have Succesfully Registered")
               }
             }

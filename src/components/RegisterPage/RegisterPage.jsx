@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import axios from "axios";
-import "./RegisterPage.css"
 import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
-import { setAuthentication } from "../../redux/userSlice";
 import { BaseURL } from "../../helpers/properties";
+import { TextField } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { Typography } from "@material-ui/core";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -51,38 +51,29 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="RegisterPage">
-      <Form onSubmit={handleSubmit}>
-      <h2 className="mb-3">Register</h2>
-        <Form.Group size="lg" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password Verification</Form.Label>
-          <Form.Control
-            type="password"
-            value={passwordVerification}
-            onChange={(e) => setPasswordVerification(e.target.value)}
-          />
-        </Form.Group>
-        <Button className="mt-3" size="lg" type="submit" disabled={!validateForm()}>
-          Submit
-        </Button>
-      </Form>
+    <div className="container mt-2 p-5">
+     
+      <Typography variant="h4" >Register</Typography>
+            <hr />
+
+      <form noValidate onSubmit={handleSubmit} autoComplete="off">
+        <Grid >
+          <Grid >
+            <TextField required label="E-Mail" value={email}  onChange={(e) => setEmail(e.target.value)} />
+          </Grid>
+          <Grid >
+            <TextField required label="Password" type="password" value={password}  onChange={(e) => setPassword(e.target.value)} />
+          </Grid>
+          <Grid >
+            <TextField required label="Password Repeat" type="password" value={passwordVerification}  onChange={(e) => setPasswordVerification(e.target.value)} />
+          </Grid>
+          <Grid container >
+            <Button className="mt-3" variant="contained" color="primary" size="lg" type="submit" disabled={!validateForm()}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     </div>
   );
 }

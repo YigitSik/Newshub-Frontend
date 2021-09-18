@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Col, Row } from "react-bootstrap";
-import { logout } from "../../services/authService"
 import { setModalStatus } from '../../redux/modalSlice';
-import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import UserTable from './UserTable';
-import "./AdminPage.css"
 import { BaseURL } from '../../helpers/properties';
 
 
@@ -43,17 +39,13 @@ export default function AdminPage() {
 
 
     return (
-        <div className="AdminPage">
+        <div className=" p-3">
 
-            <Row>
+            <h4>Admin Page</h4>
+            <hr />
 
-                <h1>Admin Page</h1>
-                <hr />
+            <UserTable {...userData} />
 
-                <Col>
-                    <UserTable {...userData} />
-                </Col>
-            </Row>
         </div>
     )
 }

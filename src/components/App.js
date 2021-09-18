@@ -19,7 +19,13 @@ import AdminPage from "./AdminPage/AdminPage"
 function App() {
 
 
-
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+      .register('/sw.js', { scope: '.' })
+      .then(function () {
+        console.log('Service worker registered!');
+      });
+  }
 
   return (
     <div >
@@ -27,8 +33,12 @@ function App() {
 
       <Router>
 
+
         <SearchBar />
+
         <ModalAlert />
+
+
 
         <Switch>
 

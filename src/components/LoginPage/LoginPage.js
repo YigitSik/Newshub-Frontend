@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import "./Login.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthentication, setIsAdmin } from '../../redux/userSlice';
 import login from "../../services/authService"
+import { TextField } from "@material-ui/core";
+import Button from '@material-ui/core/Button';
+import Grid from "@material-ui/core/Grid"
+import { Typography } from "@material-ui/core";
 
 
 
@@ -23,6 +24,9 @@ export default function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    console.log(email)
+    console.log(password);
 
     if (email && password) {
 
@@ -57,34 +61,30 @@ export default function Login() {
   }
 
   return (
-    <div className="Login">
+    <div className="container mt-2 p-5">
 
-      <Form onSubmit={handleSubmit}>
-        <h2 className="mb-3">Login</h2>
-        <Form.Group size="lg" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            autoFocus
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={error ? "border-danger" : ""}
-          />
-        </Form.Group>
-        <Form.Group size="lg" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={error ? "border-danger" : ""}
-          />
-        </Form.Group>
-        {error ? <p className="text-danger">Bad Credentials</p> : ""}
-        <Button className="mt-3" size="lg" type="submit" disabled={!validateForm()}>
-          Submit
-        </Button>
-      </Form>
+      <Typography variant="h4" >Login</Typography>
+      <hr />
+
+      <form noValidate onSubmit={handleSubmit} autoComplete="off">
+        <Grid >
+          <Grid >
+            <TextField required label="E-Mail" value={email} error={error} onChange={(e) => setEmail(e.target.value)} />
+          </Grid>
+          <Grid >
+            <TextField required label="Password" type="password" value={password} error={error} onChange={(e) => setPassword(e.target.value)} />
+          </Grid>
+          <Grid container >
+            <Button className="mt-3" variant="contained" color="primary" size="lg" type="submit" disabled={!validateForm()}>
+              Submit
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+
     </div>
+
+
+
   );
 }

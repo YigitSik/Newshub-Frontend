@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { setCurrentArticles } from '../../redux/articleSlice';
+import { setCurrentArticles, setCurrentPage } from '../../redux/articleSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import Pagination from '@material-ui/core/TablePagination';
 
@@ -8,14 +8,17 @@ export default function PaginationComponent() {
 
     const dispatch = useDispatch();
 
-    const [currentPage, setCurrentPage] = useState(1);
+    const currentPage = useSelector((state) => state.article.currentPage)
+    const currentArticle = useSelector((state) => state.article.currentArticles)
+    const article = useSelector((state) => state.article.articles)
+
+
     const [articlesPerPage, setArticlesPerPage] = useState(10);
     const [totalArticles, setTotalArticles] = useState(null);
     const [indexOfLastArticle, setIndexOfLastArticle] = useState((currentPage) * articlesPerPage);
     const [indexOfFirstArticle, setIndexOfFirstArticle] = useState(indexOfLastArticle - articlesPerPage);
 
-    const currentArticle = useSelector((state) => state.article.currentArticles)
-    const article = useSelector((state) => state.article.articles)
+
 
 
     useEffect(() => {
@@ -51,7 +54,7 @@ export default function PaginationComponent() {
 
     const handleChangePage = (event, newPage) => {
 
-        setCurrentPage(newPage + 1);
+        dispatch(setCurrentPage(newPage + 1));
         console.log(newPage + 1);
 
     };

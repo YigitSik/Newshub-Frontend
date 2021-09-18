@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setArticles, setCountry, setCategory, setSplashScreen } from '../../redux/articleSlice';
+import { setArticles, setCountry, setCategory, setSplashScreen, setCurrentPage } from '../../redux/articleSlice';
 import { countries, categories } from "../../helpers/uiData"
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { setAuthorizationToken } from "../../helpers/setAuthorizationToken";
@@ -96,6 +96,8 @@ export default function SearchBar() {
             if (location.pathname != "/") {
                 history.push("/")
             }
+
+            dispatch(setCurrentPage(1));
 
         }
 

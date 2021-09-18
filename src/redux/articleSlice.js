@@ -7,7 +7,8 @@ const initialState = {
   category: "general",
   favourites: null,
   splashScreen: true,
-  isCardView: true
+  isCardView: true,
+  currentPage: 1,
 }
 
 export const articleSlice = createSlice({
@@ -40,6 +41,10 @@ export const articleSlice = createSlice({
 
     setIsCardView: (state, bool) => {
       state.isCardView = bool.payload
+    },
+
+    setCurrentPage: (state, element) => {
+      state.currentPage = element.payload
     }
 
   },
@@ -47,6 +52,6 @@ export const articleSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setArticles, setCountry, setCategory, setFavourites, setSplashScreen, setIsCardView, setCurrentArticles } = articleSlice.actions
+export const { setArticles, setCountry, setCategory, setFavourites, setSplashScreen, setIsCardView, setCurrentArticles, setCurrentPage } = articleSlice.actions
 
 export default articleSlice.reducer
